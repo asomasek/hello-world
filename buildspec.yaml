@@ -22,10 +22,11 @@ env:
  
 steps:
 - type: Command
-  name: "Build pipelines-java"
+  name: "Build hello-world"
   timeoutInSeconds: 400
   command: |
-    mvn clean install
+    cd amd64/hello-world
+    docker build . -t helloworld1
     echo "Build Done"
   onFailure:
     - type: Command
