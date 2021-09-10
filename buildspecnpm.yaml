@@ -1,0 +1,58 @@
+version: 0.1
+component: build
+timeoutInSeconds: 6000
+runAs: root
+shell: bash
+env:
+    variables:
+        "Param4": "53"
+        "Param10": "a"
+    exportedVariables:
+        - BPParam3
+        - Param4
+        - BEParam6
+        - Param10
+
+#variables:
+# "testEnv" : "testValue1"
+#exportedVariables:
+#  - testEnv
+ 
+# inputArtifacts:
+# - name: hello-dev-jar
+# location: hello123.class
+
+ 
+steps:
+- type: Command
+  name: "Install NPM"
+  timeoutInSeconds: 400
+  command: |
+    yum install npm
+    export Param10=`npm -v`
+    echo "NPM install Done"
+  onFailure:
+    - type: Command
+      timeoutInSeconds: 400
+      command: |
+        echo "Handling Failure"
+        echo "Failure successfully handled"
+- type: Command
+  name: "Set Variables"
+  timeoutInSeconds: 30
+  command: |
+      export BPParam3=3000
+      export Param4=4000
+      export BEParam6=6000
+
+  onFailure:
+    - type: Command
+      timeoutInSeconds: 400
+      command: |
+        echo "Handling Failure"
+        echo "Failure successfully handled"
+
+outputArtifacts:
+- name: helloworld
+  type: DOCKER_IMAGE
+  location: helloworld1
