@@ -28,7 +28,7 @@ steps:
   name: "Install NPM"
   timeoutInSeconds: 400
   command: |
-    yum install -y nodejs
+    yum install -y nodejs12
     export Param10=`node -v`
     echo "NPM install Done"
   onFailure:
