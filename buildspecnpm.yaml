@@ -38,6 +38,19 @@ steps:
         echo "Handling Failure"
         echo "Failure successfully handled"
 - type: Command
+  name: "Build hello-world"
+  timeoutInSeconds: 400
+  command: |
+    cd amd64/hello-world
+    docker build . -t helloworld1
+    echo "Build Done"
+  onFailure:
+    - type: Command
+      timeoutInSeconds: 400
+      command: |
+        echo "Handling Failure"
+        echo "Failure successfully handled"
+- type: Command
   name: "Set Variables"
   timeoutInSeconds: 30
   command: |
