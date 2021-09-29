@@ -1,0 +1,70 @@
+version: 0.1
+component: build
+timeoutInSeconds: 10000
+runAs: root
+shell: bash
+env:
+    variables:
+        "Param4": "53"
+    exportedVariables:
+        - BPParam3
+        - Param4
+        - BEParam6
+
+#variables:
+# "testEnv" : "testValue1"
+#exportedVariables:
+#  - testEnv
+ 
+# inputArtifacts:
+# - name: hello-dev-jar
+# location: hello123.class
+
+ 
+steps:
+- type: Command
+  name: "Build hello-world"
+  timeoutInSeconds: 400
+  command: |
+    cd amd64/hello-world
+    docker build . -t helloworld1
+    echo "Build Done"
+  onFailure:
+    - type: Command
+      timeoutInSeconds: 400
+      command: |
+        echo "Handling Failure"
+        echo "Failure successfully handled"
+- type: Command
+  name: "Set Variables"
+  timeoutInSeconds: 30
+  command: |
+      export BPParam3=3000
+      export Param4=4000
+      export BEParam6=6000
+
+  onFailure:
+    - type: Command
+      timeoutInSeconds: 400
+      command: |
+        echo "Handling Failure"
+        echo "Failure successfully handled"
+
+- type: Command
+  name: "One Hour"
+  timeoutInSeconds: 7200
+  command: |
+      sleep 3600
+      echo "Done Sleeping"
+
+  onFailure:
+    - type: Command
+      timeoutInSeconds: 7200
+      command: |
+        echo "Handling Failure"
+        echo "Failure successfully handled"
+
+outputArtifacts:
+- name: helloworld
+  type: DOCKER_IMAGE
+  location: helloworld1
